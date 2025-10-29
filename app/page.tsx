@@ -12,18 +12,26 @@ import {
   FiAward,
   FiCheckCircle,
   FiArrowRight,
+  FiCpu,
+  FiChevronLeft,
+  FiChevronRight,
 } from 'react-icons/fi';
 import Button from '@/components/Button';
 import ServiceCard from '@/components/ServiceCard';
 import TestimonialCard from '@/components/TestimonialCard';
 import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const autoPlayRef = useRef<NodeJS.Timeout>();
   const services = [
     {
       icon: <FiCode className="w-full h-full" />,
       title: 'Web Development',
-      description: 'Custom websites and web applications built with modern technologies for optimal performance.',
+      description: 'Custom websites and web applications built with modern technologies for optimal performance and user experience.',
       features: [
         'Responsive Design',
         'E-commerce Solutions',
@@ -35,7 +43,7 @@ export default function Home() {
     {
       icon: <FiMonitor className="w-full h-full" />,
       title: 'PC Building & Repair',
-      description: 'Expert hardware solutions from custom PC builds to comprehensive repair services.',
+      description: 'Expert hardware solutions from custom PC builds to comprehensive repair services and upgrades.',
       features: [
         'Custom PC Building',
         'Hardware Upgrades',
@@ -46,8 +54,8 @@ export default function Home() {
     },
     {
       icon: <FiServer className="w-full h-full" />,
-      title: 'IT Support',
-      description: '24/7 comprehensive IT support to keep your systems running smoothly.',
+      title: 'IT Support & Managed Services',
+      description: 'Comprehensive 24/7 IT support to keep your business systems running smoothly and efficiently.',
       features: [
         'Help Desk Support',
         'Network Management',
@@ -57,18 +65,100 @@ export default function Home() {
       href: '/services#it-support',
     },
     {
+      icon: <FiCpu className="w-full h-full" />,
+      title: 'Infrastructure & Networking',
+      description: 'Complete infrastructure including network, electrical, CCTV, and VoIP systems installation.',
+      features: [
+        'LAN Network Setup',
+        'CCTV Security Systems',
+        'VoIP Phone Systems',
+        'Power Supply Networks',
+      ],
+      href: '/services#infrastructure',
+    },
+    {
       icon: <FiTool className="w-full h-full" />,
       title: 'IT Consulting',
-      description: 'Strategic technology consulting to help your business leverage IT effectively.',
+      description: 'Strategic technology consulting to help you and your business leverage IT solutions effectively and efficiently.',
       features: [
+        
         'Technology Strategy',
         'Digital Transformation',
         'System Integration',
         'Security Audits',
+        
       ],
+      
       href: '/services#consulting',
     },
   ];
+
+  // Create infinite loop by duplicating services
+  const infiniteServices = [...services, ...services, ...services];
+
+  // Carousel navigation functions
+  const scrollToIndex = (index: number, smooth = true) => {
+    if (carouselRef.current) {
+      const cardWidth = 320 + 24; // card width + gap
+      carouselRef.current.scrollTo({
+        left: index * cardWidth,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
+    }
+  };
+
+  const nextSlide = () => {
+    const newIndex = currentIndex + 1;
+    setCurrentIndex(newIndex);
+    scrollToIndex(newIndex);
+
+    // Reset to the beginning when reaching the end of first set
+    if (newIndex >= services.length * 2) {
+      setTimeout(() => {
+        setCurrentIndex(services.length);
+        scrollToIndex(services.length, false);
+      }, 500);
+    }
+  };
+
+  const prevSlide = () => {
+    const newIndex = currentIndex - 1;
+    setCurrentIndex(newIndex);
+    scrollToIndex(newIndex);
+
+    // Jump to end when going before the beginning
+    if (newIndex < services.length) {
+      setTimeout(() => {
+        setCurrentIndex(services.length * 2 - 1);
+        scrollToIndex(services.length * 2 - 1, false);
+      }, 500);
+    }
+  };
+
+  // Initialize to middle set on mount
+  useEffect(() => {
+    scrollToIndex(services.length, false);
+    setCurrentIndex(services.length);
+  }, []);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (isAutoPlaying) {
+      autoPlayRef.current = setInterval(() => {
+        nextSlide();
+      }, 4000); // Change slide every 4 seconds
+    }
+
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
+      }
+    };
+  }, [isAutoPlaying, currentIndex]);
+
+  // Pause autoplay on hover
+  const handleMouseEnter = () => setIsAutoPlaying(false);
+  const handleMouseLeave = () => setIsAutoPlaying(true);
 
   const testimonials = [
     {
@@ -88,9 +178,9 @@ export default function Home() {
   ];
 
   const stats = [
-    { icon: FiUsers, value: '500+', label: 'Happy Clients' },
-    { icon: FiCheckCircle, value: '2000+', label: 'Projects Completed' },
-    { icon: FiAward, value: '15+', label: 'Years Experience' },
+    { icon: FiUsers, value: '100+', label: 'Happy Clients' },
+    { icon: FiCheckCircle, value: '1000+', label: 'Projects Completed' },
+    { icon: FiAward, value: '29+', label: 'Years Experience' },
     { icon: FiZap, value: '99.9%', label: 'Uptime Guaranteed' },
   ];
 
@@ -106,7 +196,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
             >
               <span className="inline-block px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold mb-6">
-                Professional IT Solutions Since 2010
+                Professional IT Solutions Since 1996
               </span>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-secondary-900 mb-6 leading-tight">
                 Transform Your Business with
@@ -203,18 +293,66 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <ServiceCard {...service} />
-              </motion.div>
-            ))}
+          <div
+            className="relative -mx-4 sm:-mx-6 lg:-mx-8"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Left Arrow */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hidden md:block"
+              aria-label="Previous slide"
+            >
+              <FiChevronLeft className="w-6 h-6 text-secondary-900" />
+            </button>
+
+            {/* Right Arrow */}
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hidden md:block"
+              aria-label="Next slide"
+            >
+              <FiChevronRight className="w-6 h-6 text-secondary-900" />
+            </button>
+
+            {/* Carousel */}
+            <div
+              ref={carouselRef}
+              className="flex overflow-x-auto gap-6 px-4 sm:px-6 lg:px-8 pb-4 snap-x snap-mandatory scroll-smooth hide-scrollbar"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {infiniteServices.map((service, index) => (
+                <motion.div
+                  key={`${service.title}-${index}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  className="flex-shrink-0 w-[320px] snap-center"
+                >
+                  <ServiceCard {...service} />
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Dots indicator */}
+            <div className="flex justify-center gap-2 mt-6">
+              {services.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    const targetIndex = services.length + index;
+                    setCurrentIndex(targetIndex);
+                    scrollToIndex(targetIndex);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    currentIndex % services.length === index ? 'bg-primary-600 w-8' : 'bg-secondary-300'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -234,7 +372,7 @@ export default function Home() {
                 Your Trusted IT Partner for Success
               </h2>
               <p className="text-secondary-600 mb-8 leading-relaxed">
-                With over 15 years of experience, we've helped hundreds of businesses achieve their technology goals. Our team of certified professionals is committed to delivering excellence in every project.
+                With nearly three decades of experience since 1996, we've helped numerous businesses achieve their technology goals. Our team of certified professionals is committed to delivering excellence in every project.
               </p>
 
               <div className="space-y-4">
@@ -275,11 +413,11 @@ export default function Home() {
             >
               <div className="bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl p-8 shadow-2xl">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-6">
-                  <h3 className="text-white font-bold text-2xl mb-2">15+ Years</h3>
+                  <h3 className="text-white font-bold text-2xl mb-2">29+ Years</h3>
                   <p className="text-primary-100">of Industry Excellence</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-6">
-                  <h3 className="text-white font-bold text-2xl mb-2">500+ Clients</h3>
+                  <h3 className="text-white font-bold text-2xl mb-2">100+ Clients</h3>
                   <p className="text-primary-100">Trust Our Services</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">

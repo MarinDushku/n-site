@@ -12,6 +12,7 @@ import {
   FiCloud,
   FiSettings,
   FiCheckCircle,
+  FiCpu,
 } from 'react-icons/fi';
 import Button from '@/components/Button';
 
@@ -67,6 +68,23 @@ export default function Services() {
         'On-Site Assistance',
       ],
       technologies: ['Microsoft 365', 'Azure', 'AWS', 'Google Workspace'],
+    },
+    {
+      id: 'infrastructure',
+      icon: <FiCpu className="w-12 h-12" />,
+      title: 'Infrastructure & Networking',
+      description: 'Complete infrastructure solutions including network, electrical, CCTV, and VoIP systems.',
+      features: [
+        'LAN Network Installation & Maintenance',
+        'Telephone Network Setup',
+        'Power Supply Network Design',
+        'CCTV Security Systems',
+        'VoIP Phone Systems',
+        'Network Cabling & Management',
+        'Wireless Network Solutions',
+        'Network Security & Monitoring',
+      ],
+      technologies: ['Ethernet', 'Fiber Optic', 'VoIP', 'IP Cameras', 'Network Switches'],
     },
     {
       id: 'consulting',

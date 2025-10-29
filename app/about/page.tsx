@@ -3,23 +3,19 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
-  FiAward,
-  FiUsers,
   FiTarget,
   FiHeart,
   FiTrendingUp,
   FiShield,
-  FiZap,
 } from 'react-icons/fi';
-import Button from '@/components/Button';
 
 export default function About() {
   const team = [
     {
-      name: 'Adnand Dushku',
+      name: 'Ing. Adnand Dushku',
       role: 'Founder & CEO',
       specialization: 'IT Specialist',
-      description: 'Experienced IT specialist dedicated to delivering comprehensive technology solutions for businesses and individuals.',
+      description: 'Founded AD Services in 1996 with a vision to provide comprehensive IT solutions. With nearly three decades of experience in computer maintenance, network infrastructure, and information systems.',
     },
   ];
 
@@ -62,7 +58,7 @@ export default function About() {
               About AD Services
             </h1>
             <p className="text-xl text-secondary-200 leading-relaxed">
-              Empowering businesses with innovative technology solutions since 2010.
+              Empowering businesses with innovative technology solutions since 1996.
               We're more than an IT company—we're your technology partner for success.
             </p>
           </motion.div>
@@ -85,13 +81,13 @@ export default function About() {
               </h2>
               <div className="space-y-4 text-secondary-600 leading-relaxed">
                 <p>
-                  Founded in 2010, AD Services emerged from a simple vision: to make enterprise-grade technology accessible to businesses of all sizes. What started as a small team of passionate technologists has grown into a full-service IT company serving hundreds of clients nationwide.
+                  AD Services is a licensed company established under Albanian law and founded by Ing. Adnand Dushku in 1996. Operating in the computer and information technology fields, our main focus is computer maintenance, PC network maintenance, and comprehensive technical assistance.
                 </p>
                 <p>
-                  Our journey has been driven by a commitment to excellence and a deep understanding that technology is not just about tools—it's about solving real business challenges. We've helped companies streamline operations, scale their infrastructure, and achieve their digital transformation goals.
+                  For nearly three decades, we have delivered solutions to Government Institutions, Small and Medium Enterprises, Embassies, Foreign and Albanian Foundations, and private clients. We provide a full range of support including planning, analyzing, designing, and implementing integral information systems and sub-systems.
                 </p>
                 <p>
-                  Today, we're proud to be a trusted partner for businesses ranging from startups to established enterprises, providing comprehensive IT services that drive growth and innovation.
+                  Today, we're proud to be a trusted partner with extensive experience in maintenance contracts, technical assistance, consultancy, and supply of necessary hardware for our clients' success.
                 </p>
               </div>
             </motion.div>
@@ -105,17 +101,17 @@ export default function About() {
             >
               <div className="space-y-4">
                 <div className="bg-primary-600 rounded-2xl p-6 text-white">
-                  <div className="text-4xl font-bold mb-2">15+</div>
+                  <div className="text-4xl font-bold mb-2">29+</div>
                   <div className="text-primary-100">Years Experience</div>
                 </div>
                 <div className="bg-secondary-100 rounded-2xl p-6">
-                  <div className="text-4xl font-bold text-secondary-900 mb-2">2000+</div>
+                  <div className="text-4xl font-bold text-secondary-900 mb-2">1000+</div>
                   <div className="text-secondary-600">Projects Delivered</div>
                 </div>
               </div>
               <div className="space-y-4 mt-8">
                 <div className="bg-secondary-100 rounded-2xl p-6">
-                  <div className="text-4xl font-bold text-secondary-900 mb-2">500+</div>
+                  <div className="text-4xl font-bold text-secondary-900 mb-2">100+</div>
                   <div className="text-secondary-600">Happy Clients</div>
                 </div>
                 <div className="bg-primary-600 rounded-2xl p-6 text-white">
